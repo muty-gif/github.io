@@ -1,0 +1,521 @@
+/* VARIABLES GLOBALES */
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --neon: #39ff14;
+
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --divider: rgba(255, 255, 255, 0.12);
+
+  /* Dos pilas tipográficas basadas en Helvetica Neue:
+     - heading: pensada para títulos grandes y en negrita ("Black").
+     - body: peso normal, para texto de lectura.
+     Ambas caen en Arial si el sistema no tiene Helvetica Neue
+     instalada (por ejemplo, en Windows/Linux). */
+  --font-heading: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+
+  --max-width: 900px;
+}
+
+/* ============================================================
+   2. RESET BÁSICO
+   ============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+  /* overflow-x: hidden evita una barra de scroll horizontal si
+     alguna animación (por ejemplo el parallax) se pasa un pixel
+     del borde de la pantalla. */
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 900; /* el peso "Black" de Helvetica Neue */
+  letter-spacing: -0.02em;
+  /* letter-spacing ligeramente negativo: en titulares grandes,
+     acerca un poco las letras y se ve más compacto y "premium",
+     en vez de dejarlas con el espaciado pensado para texto pequeño. */
+  line-height: 1.1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+/* CONTENEDOR Y DIVISIÓN ENTRE SECCIONES */
+.site-header,
+.section-inner,
+.site-footer {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+main > section {
+  border-top: 1px solid var(--divider);
+  padding-block: var(--space-lg);
+}
+
+.hero {
+  border-top: none;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+/* NUMERACIÓN DE SECCIONES */
+main {
+  counter-reset: section-counter;
+}
+
+main > section {
+  counter-increment: section-counter;
+}
+
+main > section h2::before {
+  content: "0" counter(section-counter);
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--neon);
+  margin-bottom: var(--space-xs);
+}
+
+/* HEADER */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding-block: var(--space-sm);
+  position: sticky;
+  top: 0;
+  background-color: var(--black);
+  border-bottom: 1px solid var(--divider);
+  z-index: 10;
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  font-size: 1.1rem;
+}
+
+.main-nav ul {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.main-nav a {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 1px;
+  background-color: var(--neon);
+  transition: width 0.25s ease;
+}
+
+.main-nav a:hover {
+  color: var(--white);
+}
+
+.main-nav a:hover::after {
+  width: 100%;
+}
+
+/* HERO */
+.hero h1 {
+  font-size: clamp(2.8rem, 9vw, 7rem);
+  text-transform: uppercase;
+}
+
+.hero-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  margin-top: var(--space-md);
+  max-width: 50ch;
+}
+
+/* SOBRE MÍ */
+.sobre-mi p {
+  color: var(--text-secondary);
+  max-width: 65ch;
+  font-size: 1.05rem;
+}
+
+/* PROYECTO DESTACADO */
+.proyecto-card {
+  display: block;
+  border: 1px solid var(--divider);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: var(--space-md);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.proyecto-card:hover {
+  border-color: var(--neon);
+  transform: translateY(-6px);
+}
+
+.proyecto-thumb {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--divider);
+}
+
+/* Sustituye este placeholder por:
+   <img src="tu-captura.jpg" alt="Captura de [proyecto]"> dentro
+   de .proyecto-thumb, y borra .thumb-placeholder. El parallax que
+   añadimos en script.js seguirá funcionando igual sobre la imagen. */
+.thumb-placeholder {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.proyecto-info {
+  padding: var(--space-md);
+}
+
+.proyecto-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: var(--space-xs);
+}
+
+.proyecto-card p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  max-width: 60ch;
+}
+
+/* HABILIDADES */
+.habilidades-grupos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  margin-top: var(--space-md);
+}
+
+.habilidad-grupo {
+  flex: 1 1 240px;
+}
+
+.habilidad-grupo h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+}
+
+.lista-habilidades {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.lista-habilidades li {
+  border: 1px solid var(--divider);
+  color: var(--white);
+  font-size: 0.9rem;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 999px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.lista-habilidades li:hover {
+  border-color: var(--neon);
+  color: var(--neon);
+}
+
+/* CONTACTO */
+.contacto p {
+  color: var(--text-secondary);
+}
+
+.lista-contacto {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.lista-contacto a {
+  border: 1px solid var(--white);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: 999px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.lista-contacto a:hover {
+  background-color: var(--neon);
+  border-color: var(--neon);
+  color: var(--black);
+}
+
+/* FOOTER */
+.site-footer {
+  padding-block: var(--space-md) var(--space-lg);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* PRELOADER */
+.preloader {
+  position: fixed;
+  inset: 0;
+  background-color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.preloader-name {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(1.8rem, 6vw, 3rem);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+
+html.js-ready body {
+  overflow: hidden;
+}
+
+/* ANIMACIONES DE ENTRADA Y SCROLL — ESTADOS INICIALES */
+.js-ready .hero-reveal,
+.js-ready .reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js-ready body {
+    overflow: auto;
+  }
+  .js-ready .hero-reveal,
+  .js-ready .reveal-up {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* PÁGINA DE PROYECTO — BADGE DE ESTADO */
+.proyecto-hero {
+  padding-block: var(--space-xl) var(--space-lg);
+  border-top: none;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  border: 1px solid var(--neon);
+  color: var(--neon);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 999px;
+  margin-bottom: var(--space-md);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--neon);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.75); }
+}
+
+.proyecto-hero h1 {
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  text-transform: none;
+}
+
+.proyecto-tagline {
+  color: var(--white);
+  font-size: 1.3rem;
+  font-weight: 500;
+  max-width: 55ch;
+  margin-top: var(--space-md);
+}
+
+.proyecto-descripcion {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  max-width: 65ch;
+  margin-top: var(--space-md);
+}
+
+/* SECCIÓN "QUÉ ESTOY APRENDIENDO" */
+.aprendizaje p {
+  color: var(--text-secondary);
+  max-width: 65ch;
+  font-size: 1.05rem;
+}
+
+/* TIMELINE DEL PROYECTO */
+.timeline {
+  position: relative;
+  margin-top: var(--space-lg);
+  padding-left: var(--space-lg);
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background-color: var(--divider);
+}
+
+.timeline-fase {
+  position: relative;
+  padding-bottom: var(--space-lg);
+}
+
+.timeline-fase:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-fase::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-lg) + 1px);
+  top: 6px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background-color: var(--black);
+  border: 2px solid var(--text-secondary);
+}
+
+.timeline-mes {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-sm);
+}
+
+.timeline-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.timeline-items li {
+  border: 1px solid var(--divider);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 999px;
+}
+
+.timeline-fase--actual::before {
+  background-color: var(--neon);
+  border-color: var(--neon);
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+}
+
+.timeline-fase--actual .timeline-mes {
+  color: var(--neon);
+}
+
+.timeline-fase--actual .timeline-items li {
+  border-color: var(--neon);
+  color: var(--white);
+}
+
+.timeline-fase--futura {
+  opacity: 0.5;
+}
+
+.timeline-fase--futura::before {
+  border-style: dashed;
+}
+
+.timeline-meta {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-sm);
+}
+
+/* 18. RESPONSIVE */
+@media (max-width: 600px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .main-nav ul {
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+  .lista-contacto {
+    flex-direction: column;
+  }
+  .timeline {
+    padding-left: var(--space-md);
+  }
+  .timeline-fase::before {
+    left: calc(-1 * var(--space-md) + 1px);
+  }
+}
